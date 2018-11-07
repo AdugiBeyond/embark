@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {Card, CardBody} from 'reactstrap';
 
 import Preview from '../components/Preview';
-import {contracts as contractsAction} from '../actions';
 import {getContractsByPath} from "../reducers/selectors";
 import ContractDetail from '../components/ContractDetail';
 import ContractTransactionsContainer from './ContractTransactionsContainer';
@@ -12,19 +11,8 @@ import ContractOverviewContainer from '../containers/ContractOverviewContainer';
 import ContractDebuggerContainer from '../containers/ContractDebuggerContainer';
 
 class TextEditorAsideContainer extends Component {
-  componentDidMount() {
-    this.props.fetchContracts();
-  }
-
   renderContent(contract, index) {
     switch (this.props.currentAsideTab) {
-      case 'debugger':
-        return (
-          <React.Fragment>
-            <h2>{contract.className} - Debugger</h2>
-            <ContractDebuggerContainer key={index} contract={contract}/>
-          </React.Fragment>
-        );
       case 'detail':
         return (
           <React.Fragment>
@@ -55,15 +43,21 @@ class TextEditorAsideContainer extends Component {
     if (this.props.currentAsideTab === 'browser') {
       return <Preview/>;
     }
-    return this.props.contracts.map((contract, index) => {
+    if (this.props.currentAsideTab === 'debugger') {
       return (
-        <Card key={'contract-' + index} className="editor-aside-card rounded-0 border-top-0">
-          <CardBody>
-            {this.renderContent(contract, index)}
-          </CardBody>
-        </Card>
+        <React.Fragment>
+          <h2>Debugger</h2>
+          <ContractDebuggerContainer debuggerTransactionHash={this.props.debuggerTransactionHash}/>
+        </React.Fragment>
       );
-    });
+    }
+    return this.props.contracts.map((contract, index) => (
+      <Card key={'contract-' + index} className="editor-aside-card rounded-0 border-top-0">
+        <CardBody>
+          {this.renderContent(contract, index)}
+        </CardBody>
+      </Card>
+    ));
   }
 }
 
@@ -75,15 +69,12 @@ function mapStateToProps(state, props) {
 
 TextEditorAsideContainer.propTypes = {
   currentFile: PropTypes.object,
+  debuggerTransactionHash: PropTypes.string,
   currentAsideTab: PropTypes.string,
-  contract: PropTypes.array,
-  fetchContracts: PropTypes.func,
   contracts: PropTypes.array
 };
 
 export default connect(
   mapStateToProps,
-  {
-    fetchContracts: contractsAction.request
-  }
+  {}
 )(TextEditorAsideContainer);

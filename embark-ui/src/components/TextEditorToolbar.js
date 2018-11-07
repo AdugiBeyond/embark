@@ -44,16 +44,15 @@ class TextEditorToolbar extends Component {
                 <NavLink className={classnames('btn', { active: this.isActiveTab(TextEditorToolbarTabs.Transactions)})} href="#" onClick={() => this.props.openAsideTab(TextEditorToolbarTabs.Transactions)}>
                   <FontAwesomeIcon className="mr-2" name="list-alt" />Transactions
                 </NavLink>
-                <NavLink className={classnames('btn', { active: this.isActiveTab(TextEditorToolbarTabs.Debugger)})} href="#" onClick={() => this.props.openAsideTab(TextEditorToolbarTabs.Debugger)}>
-                  <FontAwesomeIcon className="mr-2" name="bug" />Debugger
-                </NavLink>
               </React.Fragment>
             }
+            <NavLink className={classnames('btn', { active: this.isActiveTab(TextEditorToolbarTabs.Debugger)})} href="#" onClick={() => this.props.openAsideTab(TextEditorToolbarTabs.Debugger)}>
+              <FontAwesomeIcon className="mr-2" name="bug" />Debugger
+            </NavLink>
             <NavLink className={classnames('btn', { active: this.isActiveTab(TextEditorToolbarTabs.Browser)})} href="#" onClick={() => this.props.openAsideTab(TextEditorToolbarTabs.Browser)}>
               <FontAwesomeIcon className="mr-2" name="eye" /> Preview
             </NavLink>
           </Nav>
-
         </li>
       </ol>
     );
